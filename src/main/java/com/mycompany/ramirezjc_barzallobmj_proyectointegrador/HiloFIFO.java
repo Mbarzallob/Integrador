@@ -29,12 +29,11 @@ public class HiloFIFO extends Thread {
         String[] fila = new String[marcos];
         while (countWhile < referencias.length) {
             int rows = jTable1.getRowCount();
-            System.out.println(countWhile);
             if (rows > 1) {
                 String[] lastRowData = new String[jTable1.getColumnCount()];
                 for (int i = 0; i < jTable1.getColumnCount(); i++) {
-                    if (countWhile - 2 >= 0 && countWhile - 2 < rows) {
-                        lastRowData[i] = jTable1.getValueAt(countWhile - 2, i).toString() == null ? "-1" : jTable1.getValueAt(countWhile - 2, i).toString();
+                    if (countWhile - 2 >= 0 ) {
+                        lastRowData[i] = jTable1.getValueAt(rows - 1, i) == null ? "-1" : jTable1.getValueAt(rows - 1, i).toString();
                     } else {
                         lastRowData[i] = "-1";
                     }
