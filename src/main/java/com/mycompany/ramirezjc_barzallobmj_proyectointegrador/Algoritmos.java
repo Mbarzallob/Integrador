@@ -37,10 +37,10 @@ public class Algoritmos extends javax.swing.JFrame {
         for (int i = 0; i < marcos; i++) {
             columnNames[i] = "Marco " + (i + 1);
         }
-        DefaultTableModel tableModel1 = new javax.swing.table.DefaultTableModel(new Object[][]{}, columnNames);
+        DefaultTableModel tableModel1 = new javax.swing.table.DefaultTableModel(new String[][]{}, columnNames);
         jTable1.setModel(tableModel1);
 
-        DefaultTableModel tableModel2 = new javax.swing.table.DefaultTableModel(new Object[][]{}, columnNames);
+        DefaultTableModel tableModel2 = new javax.swing.table.DefaultTableModel(new String[][]{}, columnNames);
         jTable2.setModel(tableModel2);
     }
 //7 0 1 2 0 3 0 4 2 3 0 3 2 1 2 0 1 7 0 1

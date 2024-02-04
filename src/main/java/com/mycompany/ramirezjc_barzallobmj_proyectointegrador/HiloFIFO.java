@@ -31,17 +31,17 @@ public class HiloFIFO extends Thread {
             int rows = jTable1.getRowCount();
             System.out.println(countWhile);
             if (rows > 1) {
-                Object[] lastRowData = new Object[jTable1.getColumnCount()];
+                String[] lastRowData = new String[jTable1.getColumnCount()];
                 for (int i = 0; i < jTable1.getColumnCount(); i++) {
                     if (countWhile - 2 >= 0 && countWhile - 2 < rows) {
-                        lastRowData[i] = jTable1.getValueAt(countWhile - 2, i) == null ? "-1" : jTable1.getValueAt(countWhile - 2, i);
+                        lastRowData[i] = jTable1.getValueAt(countWhile - 2, i).toString() == null ? "-1" : jTable1.getValueAt(countWhile - 2, i).toString();
                     } else {
                         lastRowData[i] = "-1";
                     }
 
                 }
                 int j = -1;
-                for (Object o : lastRowData) {
+                for (String o : lastRowData) {
                     if (o != null) {
                         if (o.equals(String.valueOf(referencias[countWhile]))) {
                             j = 1;
