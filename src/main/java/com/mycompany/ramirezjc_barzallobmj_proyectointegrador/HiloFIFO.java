@@ -37,7 +37,6 @@ public class HiloFIFO extends Thread {
                     } else {
                         lastRowData[i] = "-1";
                     }
-
                 }
                 int j = -1;
                 for (String o : lastRowData) {
@@ -46,7 +45,6 @@ public class HiloFIFO extends Thread {
                             j = 1;
                         }
                     }
-
                 }
                 if (j != 1) {
                     fila[count] = String.valueOf(referencias[countWhile]);
@@ -65,7 +63,7 @@ public class HiloFIFO extends Thread {
                 count++;
             }
             try {
-                Thread.sleep(100);
+                Thread.sleep(1000);
             } catch (Exception e) {
                 System.out.println(e);
             }

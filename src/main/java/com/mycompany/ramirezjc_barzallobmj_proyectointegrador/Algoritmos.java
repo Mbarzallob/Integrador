@@ -147,10 +147,10 @@ public class Algoritmos extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        hiloFIFO = new HiloFIFO(marcos, referencias);
-        //hiloOptimo = new HiloOptimo(marcos, referencias);
-        hiloFIFO.start();
-        //hiloOptimo.start();
+        //hiloFIFO = new HiloFIFO(marcos, referencias);
+        hiloOptimo = new HiloOptimo(marcos, referencias);
+        //hiloFIFO.start();
+        hiloOptimo.start();
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
