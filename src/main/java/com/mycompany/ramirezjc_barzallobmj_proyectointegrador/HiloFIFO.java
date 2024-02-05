@@ -32,7 +32,7 @@ public class HiloFIFO extends Thread {
             if (rows > 1) {
                 String[] lastRowData = new String[jTable1.getColumnCount()];
                 for (int i = 0; i < jTable1.getColumnCount(); i++) {
-                    if (countWhile - 2 >= 0 ) {
+                    if (rows - 1 >= 0 ) {
                         lastRowData[i] = jTable1.getValueAt(rows - 1, i) == null ? "-1" : jTable1.getValueAt(rows - 1, i).toString();
                     } else {
                         lastRowData[i] = "-1";

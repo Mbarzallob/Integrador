@@ -5,37 +5,35 @@
 package com.mycompany.ramirezjc_barzallobmj_proyectointegrador;
 
 import javax.swing.table.DefaultTableModel;
-import static com.mycompany.ramirezjc_barzallobmj_proyectointegrador.Algoritmos.jTable2;
+import static com.mycompany.ramirezjc_barzallobmj_proyectointegrador.Algoritmos.jTable3;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
 /**
  *
  * @author mbarz
  */
-public class HiloOptimo extends Thread {
-
+public class HiloLRU extends Thread{
     int marcos;
     int[] referencias;
 
-    public HiloOptimo(int marcos, int[] referencias) {
+    public HiloLRU(int marcos, int[] referencias) {
         this.marcos = marcos;
         this.referencias = referencias;
     }
-
+    
     @Override
     public void run() {
-        DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
+        DefaultTableModel model = (DefaultTableModel) jTable3.getModel();
         String[] fila = new String[marcos];
         int countWhile = 0;
         while (countWhile < referencias.length) {
-            int rows = jTable2.getRowCount();
+            int rows = jTable3.getRowCount();
             if (rows > 1) {
-                String[] lastRowData = new String[jTable2.getColumnCount()];
-                for (int i = 0; i < jTable2.getColumnCount(); i++) {
+                String[] lastRowData = new String[jTable3.getColumnCount()];
+                for (int i = 0; i < jTable3.getColumnCount(); i++) {
                     if (rows - 1 >= 0) {
-                        lastRowData[i] = jTable2.getValueAt(rows - 1, i) == null ? "-1" : jTable2.getValueAt(rows - 1, i).toString();
+                        lastRowData[i] = jTable3.getValueAt(rows - 1, i) == null ? "-1" : jTable3.getValueAt(rows - 1, i).toString();
                     } else {
                         lastRowData[i] = "-1";
                     }
@@ -56,7 +54,7 @@ public class HiloOptimo extends Thread {
                 if (k != 1) {
 
                     int j = 0;
-                    for (int i = countWhile ; i < referencias.length; i++) {
+                    for (int i = countWhile ; i <referencias.length; i++) {
                         for (Map.Entry<String, Integer> entry : mapaRef.entrySet()) {
                             String clave = entry.getKey();
                             if (clave.equals(String.valueOf(referencias[i]))) {
@@ -73,13 +71,13 @@ public class HiloOptimo extends Thread {
                     if (indiceUltimo != -1) {
                         fila[indiceUltimo] = String.valueOf(referencias[countWhile]);
                         model.addRow(fila);
-                        jTable2.setModel(model);
+                        jTable3.setModel(model);
                     }
                 }
             } else {
                 fila[countWhile] = String.valueOf(referencias[countWhile]);
                 model.addRow(fila);
-                jTable2.setModel(model);
+                jTable3.setModel(model);
             }
 
             try {
