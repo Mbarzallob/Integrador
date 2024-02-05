@@ -4,7 +4,6 @@
  */
 package com.mycompany.ramirezjc_barzallobmj_proyectointegrador;
 
-import java.util.List;
 import javax.swing.JOptionPane;
 
 /**
@@ -116,7 +115,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 if (validarReferencias()) {
                     if (validarSegundos()) {
                         if (alg == null) {
-                            alg = new Algoritmos(marcos, lista, segundos,this);
+                            alg = new Algoritmos(marcos, lista, segundos, this);
                         }
                         alg.setVisible(true);
                         this.setVisible(false);

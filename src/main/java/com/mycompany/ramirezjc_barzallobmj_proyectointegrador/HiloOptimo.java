@@ -8,7 +8,6 @@ import javax.swing.table.DefaultTableModel;
 import static com.mycompany.ramirezjc_barzallobmj_proyectointegrador.Algoritmos.jTable2;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
 /**
  *
@@ -23,7 +22,7 @@ public class HiloOptimo extends Thread {
     public HiloOptimo(int marcos, int[] referencias, int segundos) {
         this.marcos = marcos;
         this.referencias = referencias;
-        this.milisegundos = segundos*1000;
+        this.milisegundos = segundos * 1000;
     }
 
     @Override
@@ -33,7 +32,7 @@ public class HiloOptimo extends Thread {
         int countWhile = 0;
         while (countWhile < referencias.length) {
             int rows = jTable2.getRowCount();
-            if (rows > 1) {
+            if (rows > 0) {
                 String[] lastRowData = new String[jTable2.getColumnCount()];
                 for (int i = 0; i < jTable2.getColumnCount(); i++) {
                     if (rows - 1 >= 0) {
@@ -46,7 +45,6 @@ public class HiloOptimo extends Thread {
                 for (String s : lastRowData) {
                     mapaRef.put(s, -1);
                 }
-
                 int k = -1;
                 for (String o : lastRowData) {
                     if (o != null) {
@@ -56,9 +54,8 @@ public class HiloOptimo extends Thread {
                     }
                 }
                 if (k != 1) {
-
                     int j = 0;
-                    for (int i = countWhile ; i < referencias.length; i++) {
+                    for (int i = countWhile; i < referencias.length; i++) {
                         for (Map.Entry<String, Integer> entry : mapaRef.entrySet()) {
                             String clave = entry.getKey();
                             if (clave.equals(String.valueOf(referencias[i]))) {
@@ -69,9 +66,14 @@ public class HiloOptimo extends Thread {
                             j++;
                         }
                     }
-
+                    //for (Map.Entry<String, Integer> entry : mapaRef.entrySet()) {
+                    //  String clave = entry.getKey();
+                    //System.out.println(clave+ String.valueOf(mapaRef.get(clave)));
+                    //}
+                    //System.out.println("");
                     int indiceUltimo = indiceMaximo(mapaRef);
-                    System.out.println(indiceUltimo);
+                    //System.out.println(indiceUltimo);
+                    //System.out.println("");
                     if (indiceUltimo != -1) {
                         fila[indiceUltimo] = String.valueOf(referencias[countWhile]);
                         model.addRow(fila);
@@ -94,16 +96,19 @@ public class HiloOptimo extends Thread {
         }
     }
 
-    private static int indiceMaximo(Map<String, Integer> mapa) {
+    private  int indiceMaximo(Map<String, Integer> mapa) {
         int indice = 0;
         int indiceMax = -1;
         int valorMaximo = Integer.MIN_VALUE;
+        if(mapa.entrySet().size()<marcos){
+            return mapa.entrySet().size()-1;
+        }
         for (Map.Entry<String, Integer> entry : mapa.entrySet()) {
             String clave = entry.getKey();
             if (clave.equals("-1")) {
                 return indice;
             }
-            if(mapa.get(clave)==-1){
+            if (mapa.get(clave) == -1) {
                 return indice;
             }
             if (mapa.get(clave) > valorMaximo) {

@@ -30,7 +30,7 @@ public class HiloFIFO extends Thread {
         String[] fila = new String[marcos];
         while (countWhile < referencias.length) {
             int rows = jTable1.getRowCount();
-            if (rows > 1) {
+            if (rows > 0) {
                 String[] lastRowData = new String[jTable1.getColumnCount()];
                 for (int i = 0; i < jTable1.getColumnCount(); i++) {
                     if (rows - 1 >= 0 ) {

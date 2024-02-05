@@ -4,8 +4,6 @@
  */
 package com.mycompany.ramirezjc_barzallobmj_proyectointegrador;
 
-import java.util.LinkedList;
-import java.util.Queue;
 import javax.swing.table.DefaultTableModel;
 
 /**

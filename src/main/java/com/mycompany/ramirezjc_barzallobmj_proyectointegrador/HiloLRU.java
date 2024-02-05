@@ -13,7 +13,8 @@ import java.util.Map;
  *
  * @author mbarz
  */
-public class HiloLRU extends Thread{
+public class HiloLRU extends Thread {
+
     int marcos;
     int[] referencias;
     int milisegundos;
@@ -21,9 +22,9 @@ public class HiloLRU extends Thread{
     public HiloLRU(int marcos, int[] referencias, int segundos) {
         this.marcos = marcos;
         this.referencias = referencias;
-        this.milisegundos = segundos*1000;
+        this.milisegundos = segundos * 1000;
     }
-    
+
     @Override
     public void run() {
         DefaultTableModel model = (DefaultTableModel) jTable3.getModel();
@@ -31,7 +32,7 @@ public class HiloLRU extends Thread{
         int countWhile = 0;
         while (countWhile < referencias.length) {
             int rows = jTable3.getRowCount();
-            if (rows > 1) {
+            if (rows > 0) {
                 String[] lastRowData = new String[jTable3.getColumnCount()];
                 for (int i = 0; i < jTable3.getColumnCount(); i++) {
                     if (rows - 1 >= 0) {
@@ -56,7 +57,7 @@ public class HiloLRU extends Thread{
                 if (k != 1) {
 
                     int j = 0;
-                    for (int i = countWhile ; i >=0; i--) {
+                    for (int i = countWhile; i >= 0; i--) {
                         for (Map.Entry<String, Integer> entry : mapaRef.entrySet()) {
                             String clave = entry.getKey();
                             if (clave.equals(String.valueOf(referencias[i]))) {
@@ -69,7 +70,6 @@ public class HiloLRU extends Thread{
                     }
 
                     int indiceUltimo = indiceMaximo(mapaRef);
-                    System.out.println(indiceUltimo);
                     if (indiceUltimo != -1) {
                         fila[indiceUltimo] = String.valueOf(referencias[countWhile]);
                         model.addRow(fila);
@@ -101,7 +101,7 @@ public class HiloLRU extends Thread{
             if (clave.equals("-1")) {
                 return indice;
             }
-            if(mapa.get(clave)==-1){
+            if (mapa.get(clave) == -1) {
                 return indice;
             }
             if (mapa.get(clave) > valorMaximo) {
