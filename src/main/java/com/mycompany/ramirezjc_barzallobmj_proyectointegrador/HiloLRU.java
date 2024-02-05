@@ -16,10 +16,12 @@ import java.util.Map;
 public class HiloLRU extends Thread{
     int marcos;
     int[] referencias;
+    int milisegundos;
 
-    public HiloLRU(int marcos, int[] referencias) {
+    public HiloLRU(int marcos, int[] referencias, int segundos) {
         this.marcos = marcos;
         this.referencias = referencias;
+        this.milisegundos = segundos*1000;
     }
     
     @Override
@@ -54,7 +56,7 @@ public class HiloLRU extends Thread{
                 if (k != 1) {
 
                     int j = 0;
-                    for (int i = countWhile ; i <referencias.length; i++) {
+                    for (int i = countWhile ; i >=0; i--) {
                         for (Map.Entry<String, Integer> entry : mapaRef.entrySet()) {
                             String clave = entry.getKey();
                             if (clave.equals(String.valueOf(referencias[i]))) {
@@ -81,7 +83,7 @@ public class HiloLRU extends Thread{
             }
 
             try {
-                Thread.sleep(100);
+                Thread.sleep(milisegundos);
             } catch (Exception e) {
                 System.out.println(e);
             }

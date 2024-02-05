@@ -18,10 +18,12 @@ public class HiloOptimo extends Thread {
 
     int marcos;
     int[] referencias;
+    int milisegundos;
 
-    public HiloOptimo(int marcos, int[] referencias) {
+    public HiloOptimo(int marcos, int[] referencias, int segundos) {
         this.marcos = marcos;
         this.referencias = referencias;
+        this.milisegundos = segundos*1000;
     }
 
     @Override
@@ -83,7 +85,7 @@ public class HiloOptimo extends Thread {
             }
 
             try {
-                Thread.sleep(100);
+                Thread.sleep(milisegundos);
             } catch (Exception e) {
                 System.out.println(e);
             }

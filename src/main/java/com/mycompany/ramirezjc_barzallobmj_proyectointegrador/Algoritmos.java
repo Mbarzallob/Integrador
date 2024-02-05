@@ -20,15 +20,19 @@ public class Algoritmos extends javax.swing.JFrame {
     HiloFIFO hiloFIFO;
     HiloOptimo hiloOptimo;
     HiloLRU hiloLRU;
+    int segundos;
+    VentanaPrincipal ventanaPrincipal;
 
-    public Algoritmos(int marcos, int[] referencias) {
+    public Algoritmos(int marcos, int[] referencias, int segundos, VentanaPrincipal ventanaPrincipal) {
         this.marcos = marcos;
         this.referencias = referencias;
+        this.segundos = segundos;
+        this.ventanaPrincipal = ventanaPrincipal;
         initComponents();
         tamañoMarcos();
-        referenciasString="";
+        referenciasString = "";
         for (int referencia : referencias) {
-            referenciasString+=String.valueOf(referencia)+" ";
+            referenciasString += String.valueOf(referencia) + " ";
         }
         labelReferencias.setText(referenciasString);
     }
@@ -43,11 +47,12 @@ public class Algoritmos extends javax.swing.JFrame {
 
         DefaultTableModel tableModel2 = new javax.swing.table.DefaultTableModel(new String[][]{}, columnNames);
         jTable2.setModel(tableModel2);
-        
+
         DefaultTableModel tableModel3 = new javax.swing.table.DefaultTableModel(new String[][]{}, columnNames);
         jTable3.setModel(tableModel3);
     }
 //7 0 1 2 0 3 0 4 2 3 0 3 2 1 2 0 1 7 0 1
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -64,6 +69,7 @@ public class Algoritmos extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         jTable3 = new javax.swing.JTable();
         jLabel3 = new javax.swing.JLabel();
+        regresarBoton = new javax.swing.JToggleButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -123,6 +129,13 @@ public class Algoritmos extends javax.swing.JFrame {
 
         jLabel3.setText("LRU");
 
+        regresarBoton.setText("Regresar");
+        regresarBoton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                regresarBotonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -146,7 +159,9 @@ public class Algoritmos extends javax.swing.JFrame {
                             .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(97, 97, 97)
-                        .addComponent(jButton1)))
+                        .addComponent(jButton1)
+                        .addGap(30, 30, 30)
+                        .addComponent(regresarBoton)))
                 .addGap(64, 64, 64))
         );
         layout.setVerticalGroup(
@@ -171,7 +186,9 @@ public class Algoritmos extends javax.swing.JFrame {
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jButton1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(regresarBoton))
                 .addGap(39, 39, 39))
         );
 
@@ -179,13 +196,28 @@ public class Algoritmos extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        hiloFIFO = new HiloFIFO(marcos, referencias);
-        hiloOptimo = new HiloOptimo(marcos, referencias);
-        hiloLRU = new HiloLRU(marcos, referencias);
-        //hiloFIFO.start();
-        //hiloOptimo.start();
+        hiloFIFO = new HiloFIFO(marcos, referencias, segundos);
+        hiloOptimo = new HiloOptimo(marcos, referencias, segundos);
+        hiloLRU = new HiloLRU(marcos, referencias, segundos);
+        hiloFIFO.start();
+        hiloOptimo.start();
         hiloLRU.start();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void regresarBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_regresarBotonActionPerformed
+
+        DefaultTableModel tableModel1 = new javax.swing.table.DefaultTableModel(new String[][]{}, new String[]{});
+        jTable1.setModel(tableModel1);
+
+        DefaultTableModel tableModel2 = new javax.swing.table.DefaultTableModel(new String[][]{}, new String[]{});
+        jTable2.setModel(tableModel2);
+
+        DefaultTableModel tableModel3 = new javax.swing.table.DefaultTableModel(new String[][]{}, new String[]{});
+        jTable3.setModel(tableModel3);
+
+        this.setVisible(false);
+        ventanaPrincipal.setVisible(true);
+    }//GEN-LAST:event_regresarBotonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -201,5 +233,6 @@ public class Algoritmos extends javax.swing.JFrame {
     public static javax.swing.JTable jTable2;
     public static javax.swing.JTable jTable3;
     private javax.swing.JLabel labelReferencias;
+    private javax.swing.JToggleButton regresarBoton;
     // End of variables declaration//GEN-END:variables
 }

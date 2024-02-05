@@ -15,10 +15,11 @@ public class HiloFIFO extends Thread {
 
     int marcos;
     int[] referencias;
-
-    public HiloFIFO(int marcos, int[] referencias) {
+    int milisegundos;
+    public HiloFIFO(int marcos, int[] referencias,int segundos) {
         this.marcos = marcos;
         this.referencias = referencias;
+        this.milisegundos = segundos*1000;
     }
 
     @Override
@@ -63,7 +64,7 @@ public class HiloFIFO extends Thread {
                 count++;
             }
             try {
-                Thread.sleep(1000);
+                Thread.sleep(milisegundos);
             } catch (Exception e) {
                 System.out.println(e);
             }

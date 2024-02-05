@@ -16,6 +16,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     int[] lista;
     int marcos;
     Algoritmos alg;
+    int segundos;
 
     /**
      * Creates new form VentanaPrincipal
@@ -38,6 +39,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        tiempoText = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -52,19 +55,12 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }
         });
 
+        jLabel3.setText("Ingrese los segundos para los hilos");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(158, 158, 158)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(120, 120, 120)
-                        .addComponent(jLabel1)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 86, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -74,8 +70,22 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                             .addComponent(jTextField2))
                         .addGap(71, 71, 71))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jButton1)
-                        .addGap(161, 161, 161))))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(tiempoText, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton1))
+                        .addGap(157, 157, 157))))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(158, 158, 158)
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(120, 120, 120)
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(106, 106, 106)
+                        .addComponent(jLabel3)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -89,8 +99,12 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(tiempoText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
                 .addComponent(jButton1)
-                .addContainerGap(78, Short.MAX_VALUE))
+                .addGap(20, 20, 20))
         );
 
         pack();
@@ -100,11 +114,13 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         if (campos()) {
             if (validarMarcos()) {
                 if (validarReferencias()) {
-                    if(alg==null){
-                        alg = new Algoritmos(marcos,lista);
+                    if (validarSegundos()) {
+                        if (alg == null) {
+                            alg = new Algoritmos(marcos, lista, segundos,this);
+                        }
+                        alg.setVisible(true);
+                        this.setVisible(false);
                     }
-                    alg.setVisible(true);
-                    this.setVisible(false);
                 }
             }
         } else {
@@ -117,7 +133,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }
 
     public boolean validarMarcos() {
-        int marcosInternos =0;
+        int marcosInternos = 0;
         try {
             marcosInternos = Integer.parseInt(jTextField1.getText());
             if (marcosInternos < 2 || marcosInternos > 6) {
@@ -128,7 +144,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Debe ingresar un valor numerico en los marcos");
             return false;
         }
-        marcos= marcosInternos;
+        marcos = marcosInternos;
         return true;
     }
 
@@ -148,8 +164,24 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 return false;
             }
         }
-        lista=numeros;
+        lista = numeros;
         return true;
+    }
+
+    private boolean validarSegundos() {
+        String segundos = tiempoText.getText();
+        try {
+            int segundosParseados = Integer.parseInt(segundos);
+            this.segundos = segundosParseados;
+            if (this.segundos >= 10) {
+                JOptionPane.showMessageDialog(this, "Ingreso un tiempo muy alto, ingrese un valor menor a 10");
+                return false;
+            }
+            return true;
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Porfavor ingrese un valor valido en el tiempo");
+            return false;
+        }
     }
 
     /**
@@ -191,7 +223,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField tiempoText;
     // End of variables declaration//GEN-END:variables
 }
