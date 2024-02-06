@@ -35,7 +35,7 @@
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
                       <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="tiempoText" min="-2" pref="71" max="-2" attributes="0"/>
+                          <Component id="referenciasText" min="-2" pref="71" max="-2" attributes="0"/>
                           <Component id="jButton1" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="157" max="-2" attributes="0"/>
@@ -75,7 +75,7 @@
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="tiempoText" min="-2" max="-2" attributes="0"/>
+              <Component id="referenciasText" min="-2" max="-2" attributes="0"/>
               <EmptySpace pref="14" max="32767" attributes="0"/>
               <Component id="jButton1" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
@@ -108,10 +108,10 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel3">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Ingrese los segundos para los hilos"/>
+        <Property name="text" type="java.lang.String" value="Ingrese la cantidad de referencias"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="tiempoText">
+    <Component class="javax.swing.JTextField" name="referenciasText">
     </Component>
   </SubComponents>
 </Form>

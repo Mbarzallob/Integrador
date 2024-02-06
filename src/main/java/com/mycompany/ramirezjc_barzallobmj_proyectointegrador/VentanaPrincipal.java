@@ -39,7 +39,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
-        tiempoText = new javax.swing.JTextField();
+        referenciasText = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -54,7 +54,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }
         });
 
-        jLabel3.setText("Ingrese los segundos para los hilos");
+        jLabel3.setText("Ingrese la cantidad de referencias");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -70,7 +70,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                         .addGap(71, 71, 71))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(tiempoText, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(referenciasText, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButton1))
                         .addGap(157, 157, 157))))
             .addGroup(layout.createSequentialGroup()
@@ -100,7 +100,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(tiempoText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(referenciasText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
                 .addComponent(jButton1)
                 .addGap(20, 20, 20))
@@ -113,13 +113,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         if (campos()) {
             if (validarMarcos()) {
                 if (validarReferencias()) {
-                    if (validarSegundos()) {
-                        if (alg == null) {
-                            alg = new Algoritmos(marcos, lista, segundos, this);
-                        }
-                        alg.setVisible(true);
-                        this.setVisible(false);
+                    if (alg == null) {
+                        alg = new Algoritmos(marcos, lista, 1, this);
                     }
+                    alg.setVisible(true);
+                    this.setVisible(false);
                 }
             }
         } else {
@@ -163,24 +161,21 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 return false;
             }
         }
-        lista = numeros;
-        return true;
-    }
-
-    private boolean validarSegundos() {
-        String segundos = tiempoText.getText();
-        try {
-            int segundosParseados = Integer.parseInt(segundos);
-            this.segundos = segundosParseados;
-            if (this.segundos >= 10) {
-                JOptionPane.showMessageDialog(this, "Ingreso un tiempo muy alto, ingrese un valor menor a 10");
-                return false;
-            }
-            return true;
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Porfavor ingrese un valor valido en el tiempo");
+        int numRI;
+        try{
+            String numR = referenciasText.getText();
+            numRI = Integer.parseInt(numR);
+        }catch(NumberFormatException e){
+            JOptionPane.showMessageDialog(this, "Ingrese un valor numerico en la cantidad de referencias");
             return false;
         }
+        if(numRI!=numeros.length){
+            
+            JOptionPane.showMessageDialog(this, "La cantidad de referencias no es igual a la cantidad de referencias ingresadas en la lista");
+            return false;
+        }
+        lista = numeros;
+        return true;
     }
 
     /**
@@ -225,6 +220,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField tiempoText;
+    private javax.swing.JTextField referenciasText;
     // End of variables declaration//GEN-END:variables
 }

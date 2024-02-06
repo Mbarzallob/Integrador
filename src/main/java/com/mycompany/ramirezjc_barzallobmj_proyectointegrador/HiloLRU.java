@@ -6,8 +6,12 @@ package com.mycompany.ramirezjc_barzallobmj_proyectointegrador;
 
 import javax.swing.table.DefaultTableModel;
 import static com.mycompany.ramirezjc_barzallobmj_proyectointegrador.Algoritmos.jTable3;
+import java.awt.Color;
+import java.awt.Component;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
 
 /**
  *
@@ -18,6 +22,7 @@ public class HiloLRU extends Thread {
     int marcos;
     int[] referencias;
     int milisegundos;
+    
 
     public HiloLRU(int marcos, int[] referencias, int segundos) {
         this.marcos = marcos;
@@ -35,11 +40,8 @@ public class HiloLRU extends Thread {
             if (rows > 0) {
                 String[] lastRowData = new String[jTable3.getColumnCount()];
                 for (int i = 0; i < jTable3.getColumnCount(); i++) {
-                    if (rows - 1 >= 0) {
-                        lastRowData[i] = jTable3.getValueAt(rows - 1, i) == null ? "-1" : jTable3.getValueAt(rows - 1, i).toString();
-                    } else {
-                        lastRowData[i] = "-1";
-                    }
+                    lastRowData[i] = jTable3.getValueAt(rows - 1, i) == null ? "-1" : jTable3.getValueAt(rows - 1, i).toString();
+
                 }
                 Map<String, Integer> mapaRef = new LinkedHashMap<>();
                 for (String s : lastRowData) {
@@ -74,12 +76,19 @@ public class HiloLRU extends Thread {
                         fila[indiceUltimo] = String.valueOf(referencias[countWhile]);
                         model.addRow(fila);
                         jTable3.setModel(model);
+
+                        int lastRow = jTable3.getRowCount() - 1;
+                        int columnToColor = indiceUltimo;
+                        jTable3.getColumnModel().getColumn(columnToColor).setCellRenderer(new ColorCellRenderer(lastRow, columnToColor));
                     }
                 }
             } else {
                 fila[countWhile] = String.valueOf(referencias[countWhile]);
                 model.addRow(fila);
                 jTable3.setModel(model);
+                int lastRow = jTable3.getRowCount() - 1;
+                int columnToColor = countWhile;
+                jTable3.getColumnModel().getColumn(columnToColor).setCellRenderer(new ColorCellRenderer(lastRow, columnToColor));
             }
 
             try {
@@ -92,7 +101,8 @@ public class HiloLRU extends Thread {
         }
     }
 
-    private static int indiceMaximo(Map<String, Integer> mapa) {
+
+    private int indiceMaximo(Map<String, Integer> mapa) {
         int indice = 0;
         int indiceMax = -1;
         int valorMaximo = Integer.MIN_VALUE;
@@ -113,4 +123,27 @@ public class HiloLRU extends Thread {
         return indiceMax;
     }
 
+    class ColorCellRenderer extends DefaultTableCellRenderer {
+
+        private int rowToColor;
+        private int columnToColor;
+
+        public ColorCellRenderer(int rowToColor, int columnToColor) {
+            this.rowToColor = rowToColor;
+            this.columnToColor = columnToColor;
+        }
+
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            Component cell = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
+            if (row == rowToColor && column == columnToColor) {
+                cell.setBackground(Color.GREEN);
+            } else {
+                cell.setBackground(table.getBackground());
+            }
+
+            return cell;
+        }
+    }
 }

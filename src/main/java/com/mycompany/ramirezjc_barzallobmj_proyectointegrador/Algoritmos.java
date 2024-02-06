@@ -4,6 +4,7 @@
  */
 package com.mycompany.ramirezjc_barzallobmj_proyectointegrador;
 
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -20,12 +21,14 @@ public class Algoritmos extends javax.swing.JFrame {
     HiloLRU hiloLRU;
     int segundos;
     VentanaPrincipal ventanaPrincipal;
+    boolean corriendo;
 
     public Algoritmos(int marcos, int[] referencias, int segundos, VentanaPrincipal ventanaPrincipal) {
         this.marcos = marcos;
         this.referencias = referencias;
         this.segundos = segundos;
         this.ventanaPrincipal = ventanaPrincipal;
+        corriendo = false;
         initComponents();
         tamañoMarcos();
         referenciasString = "";
@@ -67,7 +70,7 @@ public class Algoritmos extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         jTable3 = new javax.swing.JTable();
         jLabel3 = new javax.swing.JLabel();
-        regresarBoton = new javax.swing.JToggleButton();
+        detenerBoton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -89,6 +92,7 @@ public class Algoritmos extends javax.swing.JFrame {
 
             }
         ));
+        jTable1.setEnabled(false);
         jScrollPane1.setViewportView(jTable1);
 
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
@@ -102,6 +106,7 @@ public class Algoritmos extends javax.swing.JFrame {
 
             }
         ));
+        jTable2.setEnabled(false);
         jScrollPane2.setViewportView(jTable2);
 
         jLabel1.setText("FIFO");
@@ -123,14 +128,15 @@ public class Algoritmos extends javax.swing.JFrame {
 
             }
         ));
+        jTable3.setEnabled(false);
         jScrollPane3.setViewportView(jTable3);
 
         jLabel3.setText("LRU");
 
-        regresarBoton.setText("Regresar");
-        regresarBoton.addActionListener(new java.awt.event.ActionListener() {
+        detenerBoton.setText("Detener");
+        detenerBoton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                regresarBotonActionPerformed(evt);
+                detenerBotonActionPerformed(evt);
             }
         });
 
@@ -158,8 +164,8 @@ public class Algoritmos extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(97, 97, 97)
                         .addComponent(jButton1)
-                        .addGap(30, 30, 30)
-                        .addComponent(regresarBoton)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(detenerBoton)))
                 .addGap(64, 64, 64))
         );
         layout.setVerticalGroup(
@@ -186,7 +192,7 @@ public class Algoritmos extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
-                    .addComponent(regresarBoton))
+                    .addComponent(detenerBoton))
                 .addGap(39, 39, 39))
         );
 
@@ -194,32 +200,42 @@ public class Algoritmos extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        hiloFIFO = new HiloFIFO(marcos, referencias, segundos);
-        hiloOptimo = new HiloOptimo(marcos, referencias, segundos);
-        hiloLRU = new HiloLRU(marcos, referencias, segundos);
-        hiloFIFO.start();
-        hiloOptimo.start();
-        hiloLRU.start();
+        if (!corriendo) {
+            corriendo = true;
+            if (hiloFIFO == null) {
+                hiloFIFO = new HiloFIFO(marcos, referencias, segundos);
+                hiloOptimo = new HiloOptimo(marcos, referencias, segundos);
+                hiloLRU = new HiloLRU(marcos, referencias, segundos);
+                hiloFIFO.start();
+                hiloOptimo.start();
+                hiloLRU.start();
+            } else {
+                hiloFIFO.resume();
+                hiloOptimo.resume();
+                hiloLRU.resume();
+            }
+        } else{
+            JOptionPane.showMessageDialog(this, "Ya se encuentran corriendo los algoritmos");
+        }
+
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void regresarBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_regresarBotonActionPerformed
-
-        DefaultTableModel tableModel1 = new javax.swing.table.DefaultTableModel(new String[][]{}, new String[]{});
-        jTable1.setModel(tableModel1);
-
-        DefaultTableModel tableModel2 = new javax.swing.table.DefaultTableModel(new String[][]{}, new String[]{});
-        jTable2.setModel(tableModel2);
-
-        DefaultTableModel tableModel3 = new javax.swing.table.DefaultTableModel(new String[][]{}, new String[]{});
-        jTable3.setModel(tableModel3);
-
-        this.setVisible(false);
-        ventanaPrincipal.setVisible(true);
-    }//GEN-LAST:event_regresarBotonActionPerformed
+    private void detenerBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_detenerBotonActionPerformed
+        if (corriendo) {
+            corriendo = false;
+            hiloFIFO.suspend();
+            hiloOptimo.suspend();
+            hiloLRU.suspend();
+        } else {
+            JOptionPane.showMessageDialog(this, "No estan iniciados los algoritmos");
+        }
+    }//GEN-LAST:event_detenerBotonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Referencias;
+    private javax.swing.JButton detenerBoton;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -231,6 +247,5 @@ public class Algoritmos extends javax.swing.JFrame {
     public static javax.swing.JTable jTable2;
     public static javax.swing.JTable jTable3;
     private javax.swing.JLabel labelReferencias;
-    private javax.swing.JToggleButton regresarBoton;
     // End of variables declaration//GEN-END:variables
 }

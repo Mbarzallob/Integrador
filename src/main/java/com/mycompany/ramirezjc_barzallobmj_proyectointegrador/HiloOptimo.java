@@ -6,8 +6,12 @@ package com.mycompany.ramirezjc_barzallobmj_proyectointegrador;
 
 import javax.swing.table.DefaultTableModel;
 import static com.mycompany.ramirezjc_barzallobmj_proyectointegrador.Algoritmos.jTable2;
+import java.awt.Color;
+import java.awt.Component;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
 
 /**
  *
@@ -23,6 +27,7 @@ public class HiloOptimo extends Thread {
         this.marcos = marcos;
         this.referencias = referencias;
         this.milisegundos = segundos * 1000;
+
     }
 
     @Override
@@ -30,7 +35,7 @@ public class HiloOptimo extends Thread {
         DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
         String[] fila = new String[marcos];
         int countWhile = 0;
-        while (countWhile < referencias.length) {
+        while (countWhile < referencias.length ) {
             int rows = jTable2.getRowCount();
             if (rows > 0) {
                 String[] lastRowData = new String[jTable2.getColumnCount()];
@@ -66,24 +71,33 @@ public class HiloOptimo extends Thread {
                             j++;
                         }
                     }
-                    //for (Map.Entry<String, Integer> entry : mapaRef.entrySet()) {
-                    //  String clave = entry.getKey();
-                    //System.out.println(clave+ String.valueOf(mapaRef.get(clave)));
-                    //}
-                    //System.out.println("");
+                    int valorMax = 100;
+                    for (Map.Entry<String, Integer> entry : mapaRef.entrySet()) {
+                        String clave = entry.getKey();
+                        if (mapaRef.get(clave) == -1) {
+                            mapaRef.put(clave, valorMax);
+                        }
+                        valorMax--;
+                    }
+
                     int indiceUltimo = indiceMaximo(mapaRef);
-                    //System.out.println(indiceUltimo);
-                    //System.out.println("");
                     if (indiceUltimo != -1) {
                         fila[indiceUltimo] = String.valueOf(referencias[countWhile]);
                         model.addRow(fila);
                         jTable2.setModel(model);
+
+                        int lastRow = jTable2.getRowCount() - 1;
+                        int columnToColor = indiceUltimo;
+                        jTable2.getColumnModel().getColumn(columnToColor).setCellRenderer(new ColorCellRenderer(lastRow, columnToColor));
                     }
                 }
             } else {
                 fila[countWhile] = String.valueOf(referencias[countWhile]);
                 model.addRow(fila);
                 jTable2.setModel(model);
+                int lastRow = jTable2.getRowCount() - 1;
+                int columnToColor = countWhile;
+                jTable2.getColumnModel().getColumn(columnToColor).setCellRenderer(new ColorCellRenderer(lastRow, columnToColor));
             }
 
             try {
@@ -96,13 +110,10 @@ public class HiloOptimo extends Thread {
         }
     }
 
-    private  int indiceMaximo(Map<String, Integer> mapa) {
+    private int indiceMaximo(Map<String, Integer> mapa) {
         int indice = 0;
         int indiceMax = -1;
         int valorMaximo = Integer.MIN_VALUE;
-        if(mapa.entrySet().size()<marcos){
-            return mapa.entrySet().size()-1;
-        }
         for (Map.Entry<String, Integer> entry : mapa.entrySet()) {
             String clave = entry.getKey();
             if (clave.equals("-1")) {
@@ -120,4 +131,27 @@ public class HiloOptimo extends Thread {
         return indiceMax;
     }
 
+    class ColorCellRenderer extends DefaultTableCellRenderer {
+
+        private int rowToColor;
+        private int columnToColor;
+
+        public ColorCellRenderer(int rowToColor, int columnToColor) {
+            this.rowToColor = rowToColor;
+            this.columnToColor = columnToColor;
+        }
+
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            Component cell = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
+            if (row == rowToColor && column == columnToColor) {
+                cell.setBackground(Color.GREEN);
+            } else {
+                cell.setBackground(table.getBackground());
+            }
+
+            return cell;
+        }
+    }
 }
