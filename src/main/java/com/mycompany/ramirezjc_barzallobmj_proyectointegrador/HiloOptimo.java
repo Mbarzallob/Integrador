@@ -6,6 +6,9 @@ package com.mycompany.ramirezjc_barzallobmj_proyectointegrador;
 
 import javax.swing.table.DefaultTableModel;
 import static com.mycompany.ramirezjc_barzallobmj_proyectointegrador.Algoritmos.jTable2;
+import static com.mycompany.ramirezjc_barzallobmj_proyectointegrador.Algoritmos.jTable5;
+import static com.mycompany.ramirezjc_barzallobmj_proyectointegrador.Algoritmos.fallosOptimo;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.util.LinkedHashMap;
@@ -33,9 +36,10 @@ public class HiloOptimo extends Thread {
     @Override
     public void run() {
         DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
+        DefaultTableModel model2 = (DefaultTableModel) jTable5.getModel();
         String[] fila = new String[marcos];
         int countWhile = 0;
-        while (countWhile < referencias.length ) {
+        while (countWhile < referencias.length) {
             int rows = jTable2.getRowCount();
             if (rows > 0) {
                 String[] lastRowData = new String[jTable2.getColumnCount()];
@@ -85,19 +89,34 @@ public class HiloOptimo extends Thread {
                         fila[indiceUltimo] = String.valueOf(referencias[countWhile]);
                         model.addRow(fila);
                         jTable2.setModel(model);
+                        model2.setRowCount(0);
+                        model2.addRow(fila);
+                        jTable5.setModel(model2);
 
                         int lastRow = jTable2.getRowCount() - 1;
                         int columnToColor = indiceUltimo;
                         jTable2.getColumnModel().getColumn(columnToColor).setCellRenderer(new ColorCellRenderer(lastRow, columnToColor));
+                        for (int i = 0; i < jTable5.getColumnCount(); i++) {
+                            jTable5.getColumnModel().getColumn(i).setCellRenderer(new DefaultTableCellRenderer());
+                        }
+                        jTable5.getColumnModel().getColumn(indiceUltimo).setCellRenderer(new ColorCellRenderer(0, indiceUltimo));
                     }
                 }
             } else {
                 fila[countWhile] = String.valueOf(referencias[countWhile]);
                 model.addRow(fila);
                 jTable2.setModel(model);
+                model2.setRowCount(0);
+                model2.addRow(fila);
+                jTable5.setModel(model2);
                 int lastRow = jTable2.getRowCount() - 1;
                 int columnToColor = countWhile;
                 jTable2.getColumnModel().getColumn(columnToColor).setCellRenderer(new ColorCellRenderer(lastRow, columnToColor));
+                for (int i = 0; i < jTable5.getColumnCount(); i++) {
+                    jTable5.getColumnModel().getColumn(i).setCellRenderer(new DefaultTableCellRenderer());
+                }
+                jTable5.getColumnModel().getColumn(countWhile).setCellRenderer(new ColorCellRenderer(0, countWhile));
+
             }
 
             try {
@@ -108,6 +127,7 @@ public class HiloOptimo extends Thread {
 
             countWhile++;
         }
+        fallosOptimo.setText(String.valueOf(jTable2.getRowCount()));
     }
 
     private int indiceMaximo(Map<String, Integer> mapa) {

@@ -6,6 +6,9 @@
 package com.mycompany.ramirezjc_barzallobmj_proyectointegrador;
 
 import static com.mycompany.ramirezjc_barzallobmj_proyectointegrador.Algoritmos.jTable1;
+import static com.mycompany.ramirezjc_barzallobmj_proyectointegrador.Algoritmos.jTable4;
+import static com.mycompany.ramirezjc_barzallobmj_proyectointegrador.Algoritmos.fallosFifo;
+
 import java.awt.Color;
 import java.awt.Component;
 import javax.swing.JTable;
@@ -21,7 +24,6 @@ public class HiloFIFO extends Thread {
     int marcos;
     int[] referencias;
     int milisegundos;
-    
 
     public HiloFIFO(int marcos, int[] referencias, int segundos) {
         this.marcos = marcos;
@@ -34,13 +36,14 @@ public class HiloFIFO extends Thread {
         int count = 0;
         int countWhile = 0;
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        DefaultTableModel model2 = (DefaultTableModel) jTable4.getModel();
         String[] fila = new String[marcos];
         while (countWhile < referencias.length) {
             int rows = jTable1.getRowCount();
             if (rows > 0) {
                 String[] lastRowData = new String[jTable1.getColumnCount()];
                 for (int i = 0; i < jTable1.getColumnCount(); i++) {
-                    lastRowData[i] = jTable1.getValueAt(rows -1, i) == null ? "-1" : jTable1.getValueAt(rows -1, i).toString();
+                    lastRowData[i] = jTable1.getValueAt(rows - 1, i) == null ? "-1" : jTable1.getValueAt(rows - 1, i).toString();
                 }
                 int j = -1;
                 for (String o : lastRowData) {
@@ -51,13 +54,21 @@ public class HiloFIFO extends Thread {
                     }
                 }
                 if (j != 1) {
-                    
+
                     fila[count] = String.valueOf(referencias[countWhile]);
                     model.addRow(fila);
                     jTable1.setModel(model);
+                    model2.setRowCount(0);
+                    model2.addRow(fila);
+                    jTable4.setModel(model2);
                     int lastRow = jTable1.getRowCount() - 1;
                     int columnToColor = count;
                     jTable1.getColumnModel().getColumn(columnToColor).setCellRenderer(new ColorCellRenderer(lastRow, columnToColor));
+
+                    for (int i = 0; i < jTable4.getColumnCount(); i++) {
+                        jTable4.getColumnModel().getColumn(i).setCellRenderer(new DefaultTableCellRenderer());
+                    }
+                    jTable4.getColumnModel().getColumn(columnToColor).setCellRenderer(new ColorCellRenderer(0, columnToColor));
 
                     if (count == marcos - 1) {
                         count = 0;
@@ -69,9 +80,17 @@ public class HiloFIFO extends Thread {
                 fila[count] = String.valueOf(referencias[countWhile]);
                 model.addRow(fila);
                 jTable1.setModel(model);
+                model2.setRowCount(0);
+                model2.addRow(fila);
+                jTable4.setModel(model2);
                 int lastRow = jTable1.getRowCount() - 1;
                 int columnToColor = count;
                 jTable1.getColumnModel().getColumn(columnToColor).setCellRenderer(new ColorCellRenderer(lastRow, columnToColor));
+                
+                for (int i = 0; i < jTable4.getColumnCount(); i++) {
+                    jTable4.getColumnModel().getColumn(i).setCellRenderer(new DefaultTableCellRenderer());
+                }
+                jTable4.getColumnModel().getColumn(count).setCellRenderer(new ColorCellRenderer(0, count));
 
                 count++;
             }
@@ -82,6 +101,7 @@ public class HiloFIFO extends Thread {
             }
             countWhile++;
         }
+        fallosFifo.setText(String.valueOf(jTable1.getRowCount()));
     }
 
     class ColorCellRenderer extends DefaultTableCellRenderer {

@@ -133,7 +133,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         int marcosInternos = 0;
         try {
             marcosInternos = Integer.parseInt(jTextField1.getText());
-            if (marcosInternos < 2 || marcosInternos > 6) {
+            if (marcosInternos < 2 || marcosInternos > 11) {
                 JOptionPane.showMessageDialog(this, "Debe ingresar una cantidad de marcos valida");
                 return false;
             }

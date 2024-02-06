@@ -6,6 +6,9 @@ package com.mycompany.ramirezjc_barzallobmj_proyectointegrador;
 
 import javax.swing.table.DefaultTableModel;
 import static com.mycompany.ramirezjc_barzallobmj_proyectointegrador.Algoritmos.jTable3;
+import static com.mycompany.ramirezjc_barzallobmj_proyectointegrador.Algoritmos.jTable6;
+import static com.mycompany.ramirezjc_barzallobmj_proyectointegrador.Algoritmos.fallosLru;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.util.LinkedHashMap;
@@ -22,7 +25,6 @@ public class HiloLRU extends Thread {
     int marcos;
     int[] referencias;
     int milisegundos;
-    
 
     public HiloLRU(int marcos, int[] referencias, int segundos) {
         this.marcos = marcos;
@@ -33,6 +35,7 @@ public class HiloLRU extends Thread {
     @Override
     public void run() {
         DefaultTableModel model = (DefaultTableModel) jTable3.getModel();
+        DefaultTableModel model2 = (DefaultTableModel) jTable6.getModel();
         String[] fila = new String[marcos];
         int countWhile = 0;
         while (countWhile < referencias.length) {
@@ -76,19 +79,32 @@ public class HiloLRU extends Thread {
                         fila[indiceUltimo] = String.valueOf(referencias[countWhile]);
                         model.addRow(fila);
                         jTable3.setModel(model);
-
+                        model2.setRowCount(0);
+                        model2.addRow(fila);
+                        jTable6.setModel(model2);
                         int lastRow = jTable3.getRowCount() - 1;
                         int columnToColor = indiceUltimo;
                         jTable3.getColumnModel().getColumn(columnToColor).setCellRenderer(new ColorCellRenderer(lastRow, columnToColor));
+                        for (int i = 0; i < jTable6.getColumnCount(); i++) {
+                            jTable6.getColumnModel().getColumn(i).setCellRenderer(new DefaultTableCellRenderer());
+                        }
+                        jTable6.getColumnModel().getColumn(indiceUltimo).setCellRenderer(new ColorCellRenderer(0, indiceUltimo));
                     }
                 }
             } else {
                 fila[countWhile] = String.valueOf(referencias[countWhile]);
                 model.addRow(fila);
                 jTable3.setModel(model);
+                model2.setRowCount(0);
+                model2.addRow(fila);
+                jTable6.setModel(model2);
                 int lastRow = jTable3.getRowCount() - 1;
                 int columnToColor = countWhile;
                 jTable3.getColumnModel().getColumn(columnToColor).setCellRenderer(new ColorCellRenderer(lastRow, columnToColor));
+                for (int i = 0; i < jTable6.getColumnCount(); i++) {
+                    jTable6.getColumnModel().getColumn(i).setCellRenderer(new DefaultTableCellRenderer());
+                }
+                jTable6.getColumnModel().getColumn(countWhile).setCellRenderer(new ColorCellRenderer(0, countWhile));
             }
 
             try {
@@ -99,8 +115,8 @@ public class HiloLRU extends Thread {
 
             countWhile++;
         }
+        fallosLru.setText(String.valueOf(jTable3.getRowCount()));
     }
-
 
     private int indiceMaximo(Map<String, Integer> mapa) {
         int indice = 0;
